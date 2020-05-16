@@ -1,0 +1,81 @@
+function myFunction() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheets = spreadsheet.getSheets();
+  var spc = spreadsheet.getSheets().length;
+  /*sheets[1].get***;*/
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var activespreadsheet = SpreadsheetApp.getActive();
+  var i,c,x,y,z;
+  var lastRow;
+  lastRow = getLastRow(sheet,1);
+
+  activespreadsheet.getRange('A1').activate();
+  msg=activespreadsheet.getRange('A1').getValue();
+  Browser.msgBox(msg);
+  activespreadsheet.getCurrentCell().setValue('a');
+
+  //activespreadsheet.getRange('A1').activate();
+  //activespreadsheet.getRange('A1').setBackground('#00ffff');
+  c = 0;
+  for (var i=lastRow; i=0; i--) {
+    tannka = sheet.getRange(c, 2).getValue()
+    suuryou = sheet.getRange(c, 3).getValue()
+    sheet.getRange(c, 4).setValue(tannka * suuryou) 
+    if(activespreadsheet.getRange(c, 1).getValue()="End"){
+      i=0
+    } else {
+    }
+    c = c + 1;
+  }
+};
+
+
+function myDateColumn(Date,sheet,sX,sY) {
+  var mDC={};
+  var dat = sheet.getDataRange().getValues(); //受け取ったシートのデータを二次元配列に取得
+  var ldat = dat.length
+//  var Date = new Date(Date)
+//  var Date = Utilities.formatDate(Date, 'JST', 'yyyy/MM/dd HH:mm:ss z');
+ 
+  for(var i=sX;i<ldat;i++){
+    if(Utilities.formatDate(dat[sY-1][i], 'JST', 'yyyy/MM/dd HH:mm:ss z') === Date){
+      mDC[2] = sY;
+      mDC[1] = i+1;
+      //mDC[0] = Utilities.formatDate(new Date(), 'JST', 'yyyy/MM/dd HH:mm:ss z');
+      return mDC;
+    }
+  }
+  mDC = [Date,sX,dat.length];
+  return mDC;
+};
+
+
+
+function myTest(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var range = sheet.getRange('AE5');
+  var Value = new Date(range.getValues());
+  var Valued = Utilities.formatDate(Value, 'JST', 'yyyy/MM/dd HH:mm:ss z');
+  
+  var cDate = new Date("2020/05/11")
+  var cfDate = Utilities.formatDate(cDate, 'JST', 'yyyy/MM/dd HH:mm:ss z');
+  var tmp = myDateColumn(cfDate,sheet,31,5);
+  //var tmp = myDateColumn("2020/04/03",sheet,31,5);
+  
+  var nfDate = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss z');
+  
+  console.log("スプレットシート名："+spreadsheet.getName());
+  console.log("シート名："+sheet.getName());
+  console.log("セル値："+range.getValues());
+  Logger.log("セル値書式合："+Valued);
+  
+  Logger.log("0:"+tmp[0]+" 1:"+tmp[1]+" 2:"+tmp[2]);
+  var range = sheet.getRange(tmp[2],tmp[1]);
+  var Value = new Date(range.getValues());
+  var Valued = Utilities.formatDate(Value, 'JST', 'yyyy/MM/dd HH:mm:ss z');
+  Logger.log("取得値："+Valued);
+  
+  console.log("現時刻："+new Date());
+  Logger.log("現時刻書式合："+nfDate);
+};
